@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import './App.css'
+import Header from './components/Header'
+import Home from './components/Home'
+import LoginPage from './components/LoginPage'
+import PostPage from './components/PostPage'
+import ReadPage from './components/ReadPage'
 
-function App() {
+function App(){
+  const [route, setRoute] = useState(() => (window.location.hash || '#home').replace('#',''))
+
+  useEffect(()=>{
+    const onHash = () => setRoute((window.location.hash || '#home').replace('#',''))
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  },[])
+
+  const render = () => {
+    if(route === 'login') return <LoginPage navigate={(r)=>{window.location.hash = r}} />
+    if(route === 'post') return <PostPage navigate={(r)=>{window.location.hash = r}} />
+    if(route === 'read') return <ReadPage />
+    return <Home />
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="background-image">
+      <div className="app-root">
+        <Header current={route} />
+        <main className="hero">
+          {render()}
+        </main>
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
