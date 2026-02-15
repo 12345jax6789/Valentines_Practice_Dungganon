@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 export default function LoginPage({ navigate }){
   const [name, setName] = useState('')
 
-  useEffect(()=>{ try{ const s = localStorage.getItem('valentine_name'); if(s) navigate('home') }catch{} },[])
+  useEffect(()=>{ try{ const s = localStorage.getItem('valentine_name'); if(s) navigate('home') }catch{} },[navigate])
 
   const submit = (e)=>{
     e.preventDefault()
